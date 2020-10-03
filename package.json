@@ -1,7 +1,8 @@
 {
-  "name": "keeper-app-part-1-starting",
+  "name": "keeper",
+  "author": "AkshatAdsule",
+  "repository": "https://www.github.com/AkshatAdsule/keeper.git",
   "version": "1.0.0",
-  "description": "",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
