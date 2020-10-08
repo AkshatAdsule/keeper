@@ -4,7 +4,7 @@
   "repository": "https://www.github.com/AkshatAdsule/keeper.git",
   "version": "1.0.0",
   "description": "A clone of Google Keep, using React",
-  "licence": "ISC",
+  "license": "ISC",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
