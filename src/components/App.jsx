@@ -4,27 +4,35 @@ import Footer from "./Footer";
 import Note from "./Note";
 import CreateArea from "./CreateArea";
 import axios from "axios";
+const api_url = "https://keeper-backend.azurewebsites.net";
 
 function App() {
   const [notes, setNotes] = useState([]);
 
   function addNote(note) {
-    axios.post("https://keeper-backend.azurewebsites.net", note).then(() =>
-      axios.get("https://keeper-backend.azurewebsites.net").then((res) => {
-        console.log(res);
+    axios.post(api_url, note).then(() => {
+      axios.get(api_url).then((res) => {
         setNotes(res.data);
-      })
-    );
+      });
+    });
     setNotes((prev) => [...prev, note]);
   }
 
-  function onDelete(id) {
-    setNotes((prevState) => prevState.filter((note) => note.id !== id));
+  function onDelete(postID) {
+    const req = {
+      id: postID,
+    };
+    console.log(req);
+    axios.delete(`${api_url}/${postID}`).then(() => {
+      axios.get(api_url).then((result) => {
+        setNotes(result.data);
+      });
+    });
   }
 
   //runs when componenet is created
   useEffect(() => {
-    axios.get("https://keeper-backend.azurewebsites.net").then((res) => {
+    axios.get(api_url).then((res) => {
       console.log(res);
       setNotes(res.data);
     });
