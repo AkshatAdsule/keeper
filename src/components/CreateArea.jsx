@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import AddIcon from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
 import Zoom from "@material-ui/core/Zoom";
@@ -30,16 +29,10 @@ function CreateArea(props) {
           rows={enabled ? 3 : 1}
         />
         {enabled && (
-          <Zoom in="true">
+          <Zoom in={true}>
             <Fab
               onClick={(e) => {
-                const id = uuidv4();
-                props.onAdd({
-                  key: id,
-                  id: id,
-                  title: headingText,
-                  content: bodyText,
-                });
+                props.onAdd({ title: headingText, body: bodyText });
                 setHeadingText("");
                 setBodyText("");
                 e.preventDefault();
