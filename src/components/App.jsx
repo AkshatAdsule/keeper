@@ -4,21 +4,29 @@ import Footer from "./Footer";
 import Note from "./Note";
 import CreateArea from "./CreateArea";
 import axios from "axios";
+import LoadingOverlay from "react-loading-overlay";
 
 const api_url = "https://keeper-backend.azurewebsites.net";
 
 function App() {
   const [notes, setNotes] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   function addNote(note) {
-    axios.post(api_url, note);
+    setLoading(true);
+    axios.post(api_url, note).then((e) => {
+      console.log(e);
+      setLoading(false);
+    });
     setNotes((prev) => [...prev, note]);
   }
 
   function onDelete(id) {
-    axios
-      .delete(`${api_url}/${id}`)
-      .then(() => setNotes((prev) => prev.filter((note) => note._id !== id)));
+    setLoading(true);
+    axios.delete(`${api_url}/${id}`).then(() => {
+      setNotes((prev) => prev.filter((note) => note._id !== id));
+      setLoading(false);
+    });
   }
 
   useEffect(() => {
@@ -31,15 +39,17 @@ function App() {
     <div>
       <Header />
       <CreateArea onAdd={addNote} />
-      {notes.map((note) => (
-        <Note
-          key={note._id}
-          id={note._id}
-          title={note.title}
-          content={note.body}
-          onDelete={onDelete}
-        />
-      ))}
+      <LoadingOverlay active={loading} spinner text="Loading...">
+        {notes.map((note) => (
+          <Note
+            key={note._id}
+            id={note._id}
+            title={note.title}
+            content={note.body}
+            onDelete={onDelete}
+          />
+        ))}
+      </LoadingOverlay>
       <Footer />
     </div>
   );
