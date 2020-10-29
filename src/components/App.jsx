@@ -14,9 +14,11 @@ function App() {
 
   function addNote(note) {
     setLoading(true);
-    axios.post(api_url, note).then((e) => {
-      console.log(e);
-      setLoading(false);
+    axios.post(api_url, note).then(() => {
+      axios.get(api_url).then((res) => {
+        setNotes(res.data);
+        setLoading(false);
+      });
     });
     setNotes((prev) => [...prev, note]);
   }
@@ -39,7 +41,17 @@ function App() {
     <div>
       <Header />
       <CreateArea onAdd={addNote} />
-      <LoadingOverlay active={loading} spinner text="Loading...">
+      <LoadingOverlay
+        active={loading}
+        spinner
+        text="Loading..."
+        styles={{
+          overlay: (base) => ({
+            ...base,
+            background: "rgba(40, 40, 40, 0.7)",
+          }),
+        }}
+      >
         {notes.map((note) => (
           <Note
             key={note._id}
