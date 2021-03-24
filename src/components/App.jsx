@@ -6,7 +6,7 @@ import CreateArea from "./CreateArea";
 import axios from "axios";
 import LoadingOverlay from "react-loading-overlay";
 
-const api_url = "https://keeper-backend.azurewebsites.net";
+const api_url = "https://keeper-rs.herokuapp.com"
 
 function App() {
   const [notes, setNotes] = useState([]);
@@ -20,13 +20,13 @@ function App() {
         setLoading(false);
       });
     });
-    setNotes((prev) => [...prev, note]);
+    // setNotes((prev) => [...prev, note]);
   }
 
   function onDelete(id) {
     setLoading(true);
     axios.delete(`${api_url}/${id}`).then(() => {
-      setNotes((prev) => prev.filter((note) => note._id !== id));
+      setNotes((prev) => prev.filter((note) => note._id.$oid !== id));
       setLoading(false);
     });
   }
@@ -54,7 +54,7 @@ function App() {
       >
         {notes.map((note) => (
           <Note
-            key={note._id}
+            key={note._id.$oid || note._id}
             id={note._id}
             title={note.title}
             content={note.body}
